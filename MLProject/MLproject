@@ -1,0 +1,11 @@
+name: iris_example
+
+docker_env:
+  image: iris_project
+
+entry_points:
+  main:
+    parameters:
+      kernel: {type: string, default: 'rbf'}
+      C: {type: float, default: 1}
+    command: "python train.py --kernel {kernel} --param_c {C}"

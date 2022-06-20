@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  mlflow:
+    image: mlflow:latest
+    container_name: mlflow
+    environment:
+      - ARTIFACT_ROOT=ftp://mlflow:mlflow_password@${HOST_IP}/data
+    ports:
+      - "5000:5000"
+    volumes:
+      - D:\DockerData\volumes\mlflow:/app
+    depends_on:
+      - ftpd_server
+
+  ftpd_server:
+    image: stilliard/pure-ftpd:latest
+    container_name: ftpd_server
+    environment:
+      - FTP_USER_NAME=mlflow
+      - FTP_USER_PASS=mlflow_password
+      - FTP_USER_HOME=/home/ftpusers/mlflow
+      - PUBLICHOST=${HOST_IP}
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    volumes:
+      - D:\DockerData\volumes\ftp:/home/ftpusers
